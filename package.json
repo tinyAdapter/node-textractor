@@ -1,0 +1,22 @@
+{
+  "name": "textractor",
+  "version": "1.0.0",
+  "description": "Textractor wrapper for Node.js. Extracts text from video games and visual novels.",
+  "main": "./lib/",
+  "repository": "https://github.com/tinyAdapter/node-textractor.git",
+  "author": "tinyAdapter <tinyadapter@outlook.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node ./test/",
+    "dev": "node ./test/dev.js"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.21",
+    "typescript": "^3.3.1"
+  },
+  "dependencies": {
+    "scanf": "^1.0.2",
+    "split": "^1.0.1"
+  }
+}
