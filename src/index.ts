@@ -75,8 +75,10 @@ export class Textractor extends EventEmitter {
    * @param pid Process ID
    *
    * @throws _RangeError_ if pid is invalid
+   * @throws _ReferenceError_ if Textractor process is not started
    */
   attach(pid: number) {
+    if (!this.process) throw new ReferenceError("Textractor not started");
     this.ensurePidValid(pid);
     if (this.attachedPids.indexOf(pid) !== -1) return;
 
@@ -104,6 +106,7 @@ export class Textractor extends EventEmitter {
    * @param pid Process ID
    * @param code __/H__ hook code or __/R__ read code
    *
+   * @throws _ReferenceError_ if Textractor process is not started
    * @throws _ReferenceError_ if the process has not been attached
    * @throws _SyntaxError_ if code is invalid
    */

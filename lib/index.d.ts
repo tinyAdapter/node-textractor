@@ -46,6 +46,7 @@ export declare class Textractor extends EventEmitter {
      * @param pid Process ID
      *
      * @throws _RangeError_ if pid is invalid
+     * @throws _ReferenceError_ if Textractor process is not started
      */
     attach(pid: number): void;
     /**
@@ -63,6 +64,7 @@ export declare class Textractor extends EventEmitter {
      * @param pid Process ID
      * @param code __/H__ hook code or __/R__ read code
      *
+     * @throws _ReferenceError_ if Textractor process is not started
      * @throws _ReferenceError_ if the process has not been attached
      * @throws _SyntaxError_ if code is invalid
      */

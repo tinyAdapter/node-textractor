@@ -47,6 +47,7 @@ Attach text hooker to a specific process.
 #### Throws
 
 - _RangeError_ if pid is invalid
+- _ReferenceError_ if Textractor process is not started
 
 ### detach(pid: number): void
 
@@ -72,8 +73,8 @@ Supports **/H** hook code and **/R** read code.
 
 #### Throws
 
+- _ReferenceError_ if Textractor process is not started
 - _ReferenceError_ if the process has not been attached
-
 - _SyntaxError_ if code is invalid
 
 ### on(event: "output", listener: (output: TextOutputObject) => void): this
