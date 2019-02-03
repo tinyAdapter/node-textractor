@@ -4,6 +4,7 @@ const expect = require("chai").expect;
 const validRelativePath = require("./constructor.spec").validRelativePath;
 
 const validHCode = "/HW-1C@C8B8:advhd.exe";
+const invalidCode = "//";
 
 describe("#hook", () => {
   it("throws ReferenceError if Textractor process is not started", () => {
@@ -26,9 +27,9 @@ describe("#hook", () => {
   it("throws SyntaxError if code is invalid", () => {
     let t = new Textractor(validRelativePath);
     t.start();
-    t.attach(8104);
+    t.attach(0);
     expect(() => {
-      t.hook(8104, "//");
+      t.hook(0, invalidCode);
     }).to.throw(SyntaxError, "invalid code");
     t.stop();
   });
