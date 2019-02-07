@@ -96,6 +96,7 @@ Specify callback function when text outputs.
   ctx: number; // hook context
   ctx2: number; // hook context 2
   name: string; // hook name
+  code: string; // hook code
   text: string; // output text
 }
 ```

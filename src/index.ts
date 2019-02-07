@@ -17,6 +17,8 @@ export interface TextOutputObject {
   ctx2: number;
   /** hook name */
   name: string;
+  /** hook code */
+  code: string;
   /** output text */
   text: string;
 }
@@ -45,7 +47,7 @@ export class Textractor extends EventEmitter {
    */
   constructor(path: string) {
     super();
-    this.path = resolve(__dirname, path);
+    this.path = resolve(__dirname, "..", path);
     this.splitStream = Split();
     this.splitStream.on("data", line => {
       this.onData(line);
@@ -156,13 +158,14 @@ export class Textractor extends EventEmitter {
     let parsedObject = <TextOutputObject>(
       sscanf(
         line,
-        "[%x:%x:%x:%x:%x:%s] %S",
+        "[%x:%x:%x:%x:%x:%s:%s] %S",
         "handle",
         "pid",
         "addr",
         "ctx",
         "ctx2",
         "name",
+        "code",
         "text"
       )
     );

@@ -12,6 +12,8 @@ export interface TextOutputObject {
     ctx2: number;
     /** hook name */
     name: string;
+    /** hook code */
+    code: string;
     /** output text */
     text: string;
 }

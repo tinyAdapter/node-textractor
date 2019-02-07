@@ -1,6 +1,9 @@
 # source code
 src/
 
+# dev test file
+_dev_test.js
+
 ########## .GITIGNORE ##########
 
 # Logs
