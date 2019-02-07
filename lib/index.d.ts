@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-interface TextOutputObject {
+export interface TextOutputObject {
     /** hook index */
     handle: number;
     /** process ID */
@@ -85,4 +85,3 @@ export declare class Textractor extends EventEmitter {
     private ensureProcessAttached;
     private onData;
 }
-export {};
