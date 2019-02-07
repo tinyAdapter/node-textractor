@@ -4,7 +4,7 @@ import { resolve } from "path";
 import { sscanf } from "scanf";
 const Split = require("split");
 
-interface TextOutputObject {
+export interface TextOutputObject {
   /** hook index */
   handle: number;
   /** process ID */
