@@ -32,6 +32,7 @@ export declare class Textractor extends EventEmitter {
     private path;
     private process;
     private attachedPids;
+    private textOutputObject;
     /**
      * Textractor wrapper for Node.js
      *
