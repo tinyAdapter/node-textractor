@@ -6,7 +6,7 @@ Textractor wrapper for Node.js.
 
 ## Requirements
 
-- Textractor v1.3.0 and above
+- Textractor v4.3.0 and above
 
 ## Example
 
