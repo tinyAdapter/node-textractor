@@ -39,6 +39,7 @@ export class Textractor extends EventEmitter {
   private path: string;
   private process: ChildProcess | undefined;
   private attachedPids: number[];
+  private textOutputObject: TextOutputObject;
 
   /**
    * Textractor wrapper for Node.js
@@ -53,6 +54,16 @@ export class Textractor extends EventEmitter {
       this.onData(line);
     });
     this.attachedPids = [];
+    this.textOutputObject = {
+      handle: -1,
+      pid: -1,
+      addr: -1,
+      ctx: -1,
+      ctx2: -1,
+      name: "",
+      code: "",
+      text: ""
+    };
   }
 
   /**
@@ -98,7 +109,7 @@ export class Textractor extends EventEmitter {
   detach(pid: number) {
     this.ensureProcessAttached(pid);
 
-    this.exec(`attach -P${pid}`);
+    this.exec(`detach -P${pid}`);
   }
 
   /**
@@ -154,21 +165,34 @@ export class Textractor extends EventEmitter {
   }
 
   private onData(line: string) {
-    if (line.indexOf("[") !== 0) return;
-    let parsedObject = <TextOutputObject>(
-      sscanf(
-        line,
-        "[%x:%x:%x:%x:%x:%s:%s] %S",
-        "handle",
-        "pid",
-        "addr",
-        "ctx",
-        "ctx2",
-        "name",
-        "code",
-        "text"
-      )
-    );
-    this.emit("output", parsedObject);
+    if (line.indexOf("Usage") === 0) return;
+    // Handle multiple lines
+    if (line.indexOf("[") === 0) {
+      this.textOutputObject = <TextOutputObject>(
+        sscanf(
+          line,
+          "[%x:%x:%x:%x:%x:%s:%s] %S",
+          "handle",
+          "pid",
+          "addr",
+          "ctx",
+          "ctx2",
+          "name",
+          "code",
+          "text"
+        )
+      );
+      // In case of hook code doesn't exist
+      if (this.textOutputObject.name.lastIndexOf(']') === this.textOutputObject.name.length - 1) {
+        this.textOutputObject.name =
+            this.textOutputObject.name.substring(0, this.textOutputObject.name.length - 1);
+        this.textOutputObject.text = this.textOutputObject.code;
+        this.textOutputObject.code = "";
+      }
+    } else {
+      let text = sscanf(line, "%S");
+      this.textOutputObject.text += text;
+    }
+    this.emit("output", this.textOutputObject);
   }
 }
