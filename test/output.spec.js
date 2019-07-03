@@ -47,6 +47,30 @@ describe("#output", () => {
     t.onData("大柄の男が、ずぶ濡れで立っていた。");
   });
 
+  it("output correct object in the end when multiple line data arrives and first line is empty"
+      , done => {
+    let t = new Textractor(validRelativePath);
+    var times = 0;
+    t.on("output", output => {
+      if (++times < 2) {
+        return;
+      }
+      expect(output.handle).to.equal(0x17);
+      expect(output.pid).to.equal(0x3388);
+      expect(output.addr).to.equal(0x67A78E);
+      expect(output.ctx).to.equal(0);
+      expect(output.ctx2).to.equal(0x19F95C);
+      expect(output.name).to.equal("System43");
+      expect(output.text)
+          .to
+          .equal("わずかな灯りに照らされた道の真ん中で、");
+      done();
+    });
+    t.onData(
+        "[17:3388:67A78E:0:19F95C:System43:HSN4:-14@27A78E:Haharanman.exe] ");
+    t.onData("わずかな灯りに照らされた道の真ん中で、");
+  });
+
   it("does not output anything if non-data arrives", done => {
     let somethingOutput = false;
 

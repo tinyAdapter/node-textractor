@@ -193,6 +193,9 @@ export class Textractor extends EventEmitter {
       let text = sscanf(line, "%S");
       this.textOutputObject.text += text;
     }
+    if (this.textOutputObject.text === null) {
+      this.textOutputObject.text = "";
+    }
     this.emit("output", this.textOutputObject);
   }
 }
