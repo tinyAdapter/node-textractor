@@ -71,6 +71,32 @@ describe("#output", () => {
     t.onData("わずかな灯りに照らされた道の真ん中で、");
   });
 
+  it("output correct object when content starts with square bracket", done => {
+    let t = new Textractor(validRelativePath);
+    var times = 0;
+    t.on("output", output => {
+      if (++times < 2) {
+        return;
+      }
+      expect(output.handle).to.equal(0x28);
+      expect(output.pid).to.equal(0x08D4);
+      expect(output.addr).to.equal(0x1FF7399AF90);
+      expect(output.ctx).to.equal(0x1FF7399AEC2);
+      expect(output.ctx2).to.equal(0);
+      expect(output.name).to.equal("string");
+      expect(output.text)
+          .to
+          .equal(
+              "それでいて　みちた　つきのように、" +
+              "[カレンダー]:CHECK^1:\"ケン「カレンダーです。\":PAUSE:\"ケン\":\":PAUSE:\"ケン「やはり、ペフルのママの\":\"");
+      done();
+    });
+    t.onData(
+      "[28:8D4:1FF7399AF90:1FF7399AEC2:0:string:ReplaceUnchecked (string,string):HQFX14+-1C@1FF7399AF90] " +
+        "それでいて　みちた　つきのように、");
+    t.onData("[カレンダー]:CHECK^1:\"ケン「カレンダーです。\":PAUSE:\"ケン\":\":PAUSE:\"ケン「やはり、ペフルのママの\":\"");
+  });
+
   it("does not output anything if non-data arrives", done => {
     let somethingOutput = false;
 
