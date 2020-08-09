@@ -167,26 +167,28 @@ export class Textractor extends EventEmitter {
   private onData(line: string) {
     if (line.indexOf("Usage") === 0) return;
     // Handle multiple lines
-    if (line.indexOf("[") === 0) {
+    // Use regex to match the overhead
+    let regexp = /^\[([0-9A-Fa-f]*):([0-9A-Fa-f]*):([0-9A-Fa-f]*):([0-9A-Fa-f]*):([0-9A-Fa-f]*):(.*)\]/g;
+    let overhead = regexp.exec(line);
+    if (overhead !== null) {
       this.textOutputObject = <TextOutputObject>(
         sscanf(
-          line,
-          "[%x:%x:%x:%x:%x:%s:%s] %S",
+          overhead[0],
+          "[%x:%x:%x:%x:%x:%s:%s]",
           "handle",
           "pid",
           "addr",
           "ctx",
           "ctx2",
           "name",
-          "code",
-          "text"
+          "code"
         )
       );
+      this.textOutputObject.text = line.substring(regexp.lastIndex).trim()
       // In case of hook code doesn't exist
       if (this.textOutputObject.name.lastIndexOf(']') === this.textOutputObject.name.length - 1) {
         this.textOutputObject.name =
             this.textOutputObject.name.substring(0, this.textOutputObject.name.length - 1);
-        this.textOutputObject.text = this.textOutputObject.code;
         this.textOutputObject.code = "";
       }
     } else {
